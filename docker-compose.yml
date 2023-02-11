@@ -1,0 +1,20 @@
+version: '3.5'
+
+services:
+  localstack:
+    image: localstack/localstack # This will pull the latest
+    container_name: localstack
+    network_mode: bridge
+    ports:
+      - 4566:4566 # All servics will now go through the same port.
+      - "${PORT_WEB_UI-8085}:${PORT_WEB_UI-8085}"
+    environment:
+      - SERVICES=s3,sns,sqs
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data # This is the where the data will be stored/saved, inside the docker instance
+      - PORT_WEB_UI=${PORT_WEB_UI- }
+    volumes:
+      - "localstack-vol:/tmp/localstack"
+
+volumes:
+  localstack-vol:
